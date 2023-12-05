@@ -26,7 +26,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome!</Text>
+      <Text style={styles.welcomeText}>Welcome User!</Text>
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
         <Text style={styles.timeText}>{currentDate}</Text>

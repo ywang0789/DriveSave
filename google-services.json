@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019387797693",
+    "project_id": "drivesave-69420",
+    "storage_bucket": "drivesave-69420.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019387797693:android:ca121901fd3d573c59d7d4",
+        "android_client_info": {
+          "package_name": "com.wang.drivesave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQUBMC15hWo1n5rkQtkB-3nhYlzsU2yHg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

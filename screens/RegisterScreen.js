@@ -11,37 +11,35 @@ import { auth } from "../firebase";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  onAuthStateChanged, 
-  signOut
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
-
-const LoginScreen = () => {
-  const [username, setUsername] = useState("test@test.com");
-  const [password, setPassword] = useState("123456");
+const RegisterScreen = () => {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
-  // Handle login button press
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
-      // Authenticate the user
-      await signInWithEmailAndPassword(auth, username, password);
-      // Navigate to another screen upon successful login
-      navigation.navigate("Home"); // replace 'Home' with your desired screen
+      await createUserWithEmailAndPassword(auth, username, password);
+      // You can navigate to a different screen after registration, if needed
+      navigation.navigate("Home");
     } catch (error) {
-      // Handle errors here
       alert(error.message);
     }
   };
 
-  // Handle register button press
-  const handleRegister = async () => {
-    navigation.navigate("Register");
-  };
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>DriveSave</Text>
+      <Text style={styles.title}>Create Account</Text>
+      <TextInput
+        placeholder="name"
+        value={name}
+        onChangeText={(text) => setName(text)}
+        style={styles.input}
+      />
       <TextInput
         placeholder="Email"
         value={username}
@@ -55,11 +53,8 @@ const LoginScreen = () => {
         style={styles.input}
         secureTextEntry
       />
-      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-        <Text style={styles.loginBtnText}>Log In</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
-        <Text style={styles.registerBtnText} >Register</Text>
+        <Text style={styles.registerBtnText}>Register</Text>
       </TouchableOpacity>
     </View>
   );
@@ -115,4 +110,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
