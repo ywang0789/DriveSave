@@ -1,20 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 const HomeScreen = () => {
-  const drivingScore = 69; // constant for now.... TODO: replace with actual score
+  const drivingScore = 69; // constant for now.... TODO: replace with actual scor
+
+  const [currentTime, setCurrentTime] = useState("");
+  const [currentDate, setCurrentDate] = useState("");
+
+  useEffect(() => {
+    // Update the timer every second
+    const updateTimer = () => {
+      const now = new Date();
+      // time
+      setCurrentTime(now.toLocaleTimeString());
+      
+      // date in mm/dd/yyyy format 
+      const dateOptions = { year: "numeric", month: "long", day: "numeric" };
+      setCurrentDate(now.toLocaleDateString(undefined, dateOptions));
+    };
+    updateTimer(); 
+    const timerId = setInterval(updateTimer, 1000); // update every second
+    return () => clearInterval(timerId); 
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome User!</Text>
+      <Text style={styles.welcomeText}>Welcome!</Text>
       <View style={styles.timeContainer}>
-        <Image
-          style={styles.icon}
-          source={require("./test.png")} // TODO: replace with actual icon
-        />
-        <Text style={styles.timeText}>8:02:09 AM</Text>
-        <Text style={styles.dateText}>Today: 36th November 1984</Text>
+        <Text style={styles.timeText}>{currentTime}</Text>
+        <Text style={styles.timeText}>{currentDate}</Text>
       </View>
       <AnimatedCircularProgress
         size={200}
@@ -23,7 +38,6 @@ const HomeScreen = () => {
         tintColor="#00e0ff"
         backgroundColor="#3d5875"
         padding={10}
-        style={styles.progressCircle}
       >
         {(fill) => (
           <View style={styles.scoreContainer}>
@@ -51,6 +65,15 @@ const styles = StyleSheet.create({
   timeContainer: {
     alignItems: "center",
     justifyContent: "center",
+    margin: 10,
+    padding: 40,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius: 10
   },
   icon: {
     width: 50,
@@ -58,13 +81,11 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 18,
-    color: "#ffffff",
+    color: "#333",
   },
-  dateText: {
-    fontSize: 16,
-    color: "#ffffff",
+  progressCircle: {
+    
   },
-  progressCircle: {},
   scoreContainer: {
     position: "absolute",
     alignItems: "center",
