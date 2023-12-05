@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 // import screens
@@ -7,6 +8,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import HomeScreen from "./screens/HomeScreen";
 import AccountScreen from "./screens/AccountScreen";
 import HistoryScreen from "./screens/HistoryScreen";
+import TrackingScreen from "./screens/TrackingScreen";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +39,11 @@ const App = () => {
         <Stack.Screen
           name="History"
           component={HistoryScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Track"
+          component={TrackingScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

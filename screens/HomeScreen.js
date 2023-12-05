@@ -6,7 +6,6 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { set } from "date-fns";
 
 const HomeScreen = ({ route }) => {
   const navigator = useNavigation();
@@ -15,7 +14,7 @@ const HomeScreen = ({ route }) => {
   const [currentDate, setCurrentDate] = useState("");
   const [userData, setUserData] = useState(route.params.userData);
   const [drivingScore, setDrivingScore] = useState(0);
-  
+
   const userName = userData.name;
 
   // fetch new user data from firestore
@@ -28,19 +27,22 @@ const HomeScreen = ({ route }) => {
       setUserData(fetchedUserData);
       // Calculate average driving score
       if (fetchedUserData.trips && fetchedUserData.trips.length > 0) {
-        const totalScore = fetchedUserData.trips.reduce((sum, trip) => sum + trip.score, 0);
+        const totalScore = fetchedUserData.trips.reduce(
+          (sum, trip) => sum + trip.score,
+          0
+        );
         const averageScore = totalScore / fetchedUserData.trips.length;
         setDrivingScore(averageScore);
       } else {
-          console.log("No trips found!");
-        }
+        console.log("No trips found!");
+      }
     } else {
       console.log("No such document!");
     }
   };
 
+  // Update the time every second
   useEffect(() => {
-    // Update the time every second
     const updateTimer = () => {
       const now = new Date();
       // time
@@ -54,20 +56,26 @@ const HomeScreen = ({ route }) => {
     return () => clearInterval(timerId);
   }, []);
 
+  // fetch user data from firestore on screen focus
   useFocusEffect(
     React.useCallback(() => {
       fetchUserData();
     }, [])
   );
 
+  // on accunt btn press -> navigate to AccountScreen  
   const handleAccountPress = () => {
     navigator.navigate("Account", { userData });
   };
 
+  // on history btn press -> navigate to HistoryScreen
   const handleHistoryPress = () => {
     navigator.navigate("History", { userData });
   };
 
+  const handlePlayPress = () => {
+    navigator.navigate("Track", { userData });
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.welcomeText}>Welcome {userName}!</Text>
@@ -101,9 +109,7 @@ const HomeScreen = ({ route }) => {
           name="play-circle-outline"
           size={80}
           color="#000"
-          onPress={() => {
-            /* Handle press for Icon 2 */
-          }}
+          onPress={handlePlayPress}
         />
         <Icon
           name="history"

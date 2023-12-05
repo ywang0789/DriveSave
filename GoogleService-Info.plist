@@ -26,5 +26,10 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:1019387797693:ios:92847e21b3cd9bec59d7d4</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app requires location access to function properly.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app requires location access to function properly.</string>
+	
 </dict>
 </plist>

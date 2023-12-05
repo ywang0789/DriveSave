@@ -80,6 +80,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#ffffff",
+    textAlign: "left",
+    padding: 20,
   },
 });
 

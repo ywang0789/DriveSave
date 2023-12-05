@@ -16,8 +16,8 @@ const HistoryScreen = ({ route }) => {
           const startDate = trip.start_time.toDate(); // Convert Firebase Timestamp to JS Date
           const endDate = trip.end_time.toDate();
           const duration = differenceInMinutes(endDate, startDate);
-          const date = format(startDate, "PPP"); // Date in format 'Jan 1, 2020'
-          const time = format(startDate, "p"); // Time in format '12:00 AM'
+          const date = format(startDate, 'PPP'); // Date in format 'Jan 1, 2020'
+          const time = format(startDate, 'p'); // Time in format '12:00 AM'
 
           return (
             <View key={index} style={styles.card}>
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#ffffff",
-    textAlign: "center",
+    textAlign: "left",
+    padding: 20,
     marginTop: 50,
   },
 });
