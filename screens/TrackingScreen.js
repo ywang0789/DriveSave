@@ -4,9 +4,17 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+import { format } from "date-fns";
+import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "../firebase";
+
 const TrackingScreen = ({ route }) => {
   const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
   const uid = userData.uid;
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
+  const [timer, setTimer] = useState(null);
+
   const [mapRegion, setMapRegion] = useState({
     latitude: 0,
     longitude: 0,
@@ -15,7 +23,7 @@ const TrackingScreen = ({ route }) => {
   });
   const mapRef = useRef(null); // Ref for  MapView
 
-    // update location function
+  // update location function
   const updateLocation = async () => {
     // ask for permission
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -51,18 +59,36 @@ const TrackingScreen = ({ route }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-
   // reset camera to current location
   const handleResetCamera = () => {
     mapRef.current.animateToRegion(mapRegion, 500);
   };
 
+  // start tracking
   const handleStart = () => {
-
+    const start = new Date();
+      setStartTime(start);
+      console.log("Start time: ", start);
   };
 
-  const handleStop = () => {
+  // stop tracking
+  const handleStop = async () => {
+    const end = new Date();
+      setEndTime(end);
+        console.log("End time: ", end);
 
+    // Construct a new trip entry
+    const newTrip = {
+      start_time: startTime, // Format this as needed
+      end_time: end, // Format this as needed
+      score: 50,
+    };
+
+    // Save the new trip to the db in 'trips' field under the users 
+    const userRef = doc(db, "users", userData.uid);
+    await updateDoc(userRef, {
+      trips: arrayUnion(newTrip),
+    });
   };
 
   return (
