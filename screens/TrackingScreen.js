@@ -1,6 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import MapView, { Marker } from "react-native-maps";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import {
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    Text,
+    Modal,
+    TextInput,
+    Alert,
+} from "react-native";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -15,6 +23,10 @@ const TrackingScreen = ({ route }) => {
     const [endTime, setEndTime] = useState(null);
     const [timerValue, setTimerValue] = useState(0);
     const timerRef = useRef(null); // Ref for timer
+
+    // for popup
+    const [modalVisible, setModalVisible] = useState(false);
+    const [userScore, setUserScore] = useState("");
 
     const [mapRegion, setMapRegion] = useState({
         latitude: 0,
@@ -115,21 +127,38 @@ const TrackingScreen = ({ route }) => {
         clearInterval(timerRef.current);
         timerRef.current = null;
 
-        // make a new trip entry
-        const newTrip = {
-            start_time: startTime,
-            end_time: end, // DONT USE endTime becuz async shanaygans
-            score: 50, // TODO: calculate score - prob no time to implement /o\
-        };
+        //TODO: calculate score - prob no time to implement / o\
 
-        // Save the to db
-        await saveTrip(newTrip);
+        // Show the modal to get the score from user :)
+        setModalVisible(true);
+    };
+
+    // submit score form the popup
+    const handleSubmitScore = async () => {
+        const score = parseInt(userScore, 10); // string to number
+        // chieck input
+        if (!isNaN(score) && score >= 0 && score <= 100) {
+            // make new trip obj
+            const newTrip = {
+                start_time: startTime,
+                end_time: endTime,
+                score: score,
+            };
+
+            // save trip to db
+            await saveTrip(newTrip);
+
+            setModalVisible(false);
+
+            setUserScore(""); // Reset the score input
+        } else {
+            alert("Please enter a valid score");
+        }
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Tracking</Text>
-
             <View style={styles.mapContainer}>
                 <MapView style={styles.map} region={mapRegion} ref={mapRef}>
                     <Marker coordinate={mapRegion} />
@@ -153,13 +182,43 @@ const TrackingScreen = ({ route }) => {
                     <Text style={styles.startBtnText}>START</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    style={ timerValue === 0? styles.disabledStopBtn : styles.stopBtn}
+                    style={
+                        timerValue === 0
+                            ? styles.disabledStopBtn
+                            : styles.stopBtn
+                    }
                     onPress={handleStop}
                     disabled={timerValue === 0}
                 >
                     <Text style={styles.startBtnText}>STOP</Text>
                 </TouchableOpacity>
             </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Enter your score:</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={setUserScore}
+                            value={userScore}
+                            keyboardType="numeric"
+                        />
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonClose]}
+                            onPress={handleSubmitScore}
+                        >
+                            <Text style={styles.textStyle}>Submit Score</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };
@@ -271,6 +330,35 @@ const styles = StyleSheet.create({
         color: "#fff",
         fontSize: 18,
         fontWeight: "bold",
+    },
+
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        width: 200,
     },
 });
 
