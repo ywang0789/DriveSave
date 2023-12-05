@@ -29,12 +29,12 @@ const LoginScreen = () => {
       const uid = userCredential.user.uid;
 
       // fetch user data from firestore
-      const userRef = doc(db, "users", uid);
-      const docSnap = await getDoc(userRef);
+      const docRef = doc(db, "users", uid);
+      const docSnapshot = await getDoc(docRef);
 
-      if (docSnap.exists()) {
+      if (docSnapshot.exists()) {
         // upon successful login -> go to home screen
-        navigation.navigate("Home", { userData: docSnap.data() }); // passing user data to home screen
+        navigation.navigate("Home", { userData: docSnapshot.data() }); // passing user data to home screen
       } else {
         console.log("No such user!");
       }

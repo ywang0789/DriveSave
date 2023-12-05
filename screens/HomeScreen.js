@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
+import { set } from "date-fns";
 
 const HomeScreen = ({ route }) => {
   const navigator = useNavigation();
@@ -13,17 +14,26 @@ const HomeScreen = ({ route }) => {
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [userData, setUserData] = useState(route.params.userData);
-
-  const drivingScore = 69; // constant for now.... TODO: replace with actual scor
+  const [drivingScore, setDrivingScore] = useState(0);
+  
   const userName = userData.name;
 
   // fetch new user data from firestore
   const fetchUserData = async () => {
-    const userDoc = doc(db, "users", userData.uid);
-    const userSnapshot = await getDoc(userDoc);
+    const docRef = doc(db, "users", userData.uid);
+    const docSnapshot = await getDoc(docRef);
 
-    if (userSnapshot.exists()) {
-      setUserData(userSnapshot.data());
+    if (docSnapshot.exists()) {
+      const fetchedUserData = docSnapshot.data();
+      setUserData(fetchedUserData);
+      // Calculate average driving score
+      if (fetchedUserData.trips && fetchedUserData.trips.length > 0) {
+        const totalScore = fetchedUserData.trips.reduce((sum, trip) => sum + trip.score, 0);
+        const averageScore = totalScore / fetchedUserData.trips.length;
+        setDrivingScore(averageScore);
+      } else {
+          console.log("No trips found!");
+        }
     } else {
       console.log("No such document!");
     }
