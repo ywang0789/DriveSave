@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 
-
-const HomeScreen = ({ route}) => {
+const HomeScreen = ({ route }) => {
   const drivingScore = 69; // constant for now.... TODO: replace with actual scor
   const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
   const userName = userData.name;
@@ -48,6 +47,26 @@ const HomeScreen = ({ route}) => {
           </View>
         )}
       </AnimatedCircularProgress>
+      <View style={styles.dock}>
+        <Button
+          title="Button 1"
+          onPress={() => {
+            /* Handle press for Button 1 */
+          }}
+        />
+        <Button
+          title="Button 2"
+          onPress={() => {
+            /* Handle press for Button 2 */
+          }}
+        />
+        <Button
+          title="Button 3"
+          onPress={() => {
+            /* Handle press for Button 3 */
+          }}
+        />
+      </View>
     </View>
   );
 };
@@ -57,7 +76,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#8fd9a8",
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
+    
   },
   welcomeText: {
     fontSize: 24,
@@ -75,7 +95,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    borderRadius: 10
+    borderRadius: 10,
   },
   icon: {
     width: 50,
@@ -85,9 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#333",
   },
-  progressCircle: {
-    
-  },
+  progressCircle: {},
   scoreContainer: {
     position: "absolute",
     alignItems: "center",
@@ -101,6 +119,21 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#333",
+  },
+  dock: {
+    position: "absolute",
+    bottom: 0,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    marginTop: 30,
+    backgroundColor: "#fff",
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.25,  
+    shadowRadius: 3.84,
+    elevation: 5
   },
 });
 
