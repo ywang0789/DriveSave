@@ -5,12 +5,11 @@ import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 const AccountScreen = ({ route }) => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
 
-    const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
-    const userName = userData.name;
-    const userEmail = userData.email;
-
+  const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
+  const userName = userData.name;
+  const userEmail = userData.email;
 
   // logs user out and navigates to login screen
   const handleLogout = () => {
@@ -25,8 +24,9 @@ const AccountScreen = ({ route }) => {
   };
   return (
     <View style={styles.container}>
+      <Text style={styles.titleText}>Account Summary</Text>
       <View style={styles.card}>
-              <Text style={styles.text}>Name: {userName}</Text>
+        <Text style={styles.text}>Name: {userName}</Text>
         <Text style={styles.text}>Email: {userEmail} </Text>
       </View>
       <View style={styles.btnContainer}>
@@ -75,6 +75,11 @@ const styles = StyleSheet.create({
     color: "#ffff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  titleText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#ffffff",
   },
 });
 

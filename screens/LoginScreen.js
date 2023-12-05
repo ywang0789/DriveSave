@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore"; 
+import { doc, getDoc } from "firebase/firestore";
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("test@test.com"); // default username for testing
@@ -21,7 +21,11 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       // Authenticate the user
-      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        username,
+        password
+      );
       const uid = userCredential.user.uid;
 
       // fetch user data from firestore
@@ -30,12 +34,10 @@ const LoginScreen = () => {
 
       if (docSnap.exists()) {
         // upon successful login -> go to home screen
-        navigation.navigate("Home", {userData: docSnap.data()}); // passing user data to home screen
-      }
-      else {
+        navigation.navigate("Home", { userData: docSnap.data() }); // passing user data to home screen
+      } else {
         console.log("No such user!");
       }
-
     } catch (error) {
       // Handle errors here
       alert(error.message);

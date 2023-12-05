@@ -10,25 +10,30 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db } from "../firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore"; 
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const RegisterScreen = () => {
+  const navigation = useNavigation();
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigation = useNavigation();
 
-    // registers user with firebase
+  // registers user with firebase
   const handleRegister = async () => {
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, username, password);
-        const uid = userCredential.user.uid;
-        
-        // add new document to firestore in users collection
-        await setDoc(doc(db, "users", uid), {
-            name: name,
-            email: username,
-        });
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        username,
+        password
+      );
+      const uid = userCredential.user.uid;
+
+      // add new document to firestore in users collection
+      await setDoc(doc(db, "users", uid), {
+        name: name,
+        email: username,
+        uid: userCredential.user.uid,
+      });
 
       navigation.navigate("Login"); // back to login screen
     } catch (error) {

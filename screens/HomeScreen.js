@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons"; 
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
-
+import { db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const HomeScreen = ({ route }) => {
   const navigator = useNavigation();
-  const drivingScore = 69; // constant for now.... TODO: replace with actual scor
-  const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
-  const userName = userData.name;
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
+  const [userData, setUserData] = useState(route.params.userData);
+
+  const drivingScore = 69; // constant for now.... TODO: replace with actual scor
+  const userName = userData.name;
+
+  // fetch new user data from firestore
+  const fetchUserData = async () => {
+    const userDoc = doc(db, "users", userData.uid);
+    const userSnapshot = await getDoc(userDoc);
+
+    if (userSnapshot.exists()) {
+      setUserData(userSnapshot.data());
+    } else {
+      console.log("No such document!");
+    }
+  };
 
   useEffect(() => {
     // Update the time every second
@@ -29,10 +44,19 @@ const HomeScreen = ({ route }) => {
     return () => clearInterval(timerId);
   }, []);
 
-  const handleAccountPress = () => {
-    navigator.navigate("Account", { userData: userData });
-  }
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
+  const handleAccountPress = () => {
+    navigator.navigate("Account", { userData });
+  };
+
+  const handleHistoryPress = () => {
+    navigator.navigate("History", { userData });
+  };
 
   return (
     <View style={styles.container}>
@@ -75,9 +99,7 @@ const HomeScreen = ({ route }) => {
           name="history"
           size={40}
           color="#000"
-          onPress={() => {
-            /* Handle press for Icon 3 */
-          }}
+          onPress={handleHistoryPress}
         />
       </View>
     </View>
@@ -90,7 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#8fd9a8",
     alignItems: "center",
     justifyContent: "space-evenly",
-    
   },
   welcomeText: {
     fontSize: 24,
@@ -145,9 +166,9 @@ const styles = StyleSheet.create({
     padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.25,  
+    shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: 5,
   },
 });
 
