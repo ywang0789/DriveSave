@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { format, differenceInMinutes } from "date-fns";
 
 const HistoryScreen = ({ route }) => {
   const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
@@ -11,14 +12,22 @@ const HistoryScreen = ({ route }) => {
     <View style={styles.container}>
       <Text style={styles.titleText}>History</Text>
       <ScrollView style={styles.scrollView}>
-        {data.map((item, index) => (
-          <View key={index} style={styles.card}>
-            <Text>Date:</Text>
-            <Text>Time:</Text>
-            <Text>Duration:</Text>
-            <Text>Score:</Text>
-          </View>
-        ))}
+        {userTrips.map((trip, index) => {
+          const startDate = trip.start_time.toDate(); // Convert Firebase Timestamp to JS Date
+          const endDate = trip.end_time.toDate();
+          const duration = differenceInMinutes(endDate, startDate);
+          const date = format(startDate, "PPP"); // Date in format 'Jan 1, 2020'
+          const time = format(startDate, "p"); // Time in format '12:00 AM'
+
+          return (
+            <View key={index} style={styles.card}>
+              <Text>Date: {date}</Text>
+              <Text>Time: {time}</Text>
+              <Text>Duration: {duration} minutes</Text>
+              <Text>Score: {trip.score}</Text>
+            </View>
+          );
+        })}
       </ScrollView>
     </View>
   );
