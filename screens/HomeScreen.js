@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"; 
+import { useNavigation } from "@react-navigation/native";
 
 
 const HomeScreen = ({ route }) => {
+  const navigator = useNavigation();
   const drivingScore = 69; // constant for now.... TODO: replace with actual scor
   const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
   const userName = userData.name;
@@ -26,6 +28,11 @@ const HomeScreen = ({ route }) => {
     const timerId = setInterval(updateTimer, 1000); // update every second
     return () => clearInterval(timerId);
   }, []);
+
+  const handleAccountPress = () => {
+    navigator.navigate("Account", { userData: userData });
+  }
+
 
   return (
     <View style={styles.container}>
@@ -54,9 +61,7 @@ const HomeScreen = ({ route }) => {
           name="account"
           size={40}
           color="#000"
-          onPress={() => {
-            /* Handle press for Icon 1 */
-          }}
+          onPress={handleAccountPress}
         />
         <Icon
           name="play-circle-outline"
