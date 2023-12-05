@@ -5,26 +5,22 @@ import { AnimatedCircularProgress } from "react-native-circular-progress";
 
 const HomeScreen = ({ route}) => {
   const drivingScore = 69; // constant for now.... TODO: replace with actual scor
-  const userData = route.params.userData;
-  console.log(userData);
+  const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
   const userName = userData.name;
-  console.log(userName);
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
-    // Update the timer every second
+    // Update the time every second
     const updateTimer = () => {
       const now = new Date();
       // time
       setCurrentTime(now.toLocaleTimeString());
-
       // date in mm/dd/yyyy format
       const dateOptions = { year: "numeric", month: "long", day: "numeric" };
       setCurrentDate(now.toLocaleDateString(undefined, dateOptions));
     };
-
     updateTimer();
     const timerId = setInterval(updateTimer, 1000); // update every second
     return () => clearInterval(timerId);

@@ -13,11 +13,11 @@ import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore"; 
 
 const LoginScreen = () => {
-  const [username, setUsername] = useState("test@test.com");
-  const [password, setPassword] = useState("123456");
+  const [username, setUsername] = useState("test@test.com"); // default username for testing
+  const [password, setPassword] = useState("123456"); // default password for testing
   const navigation = useNavigation();
 
-  // Handle login button press
+  // logs user in with firebase
   const handleLogin = async () => {
     try {
       // Authenticate the user
@@ -29,8 +29,8 @@ const LoginScreen = () => {
       const docSnap = await getDoc(userRef);
 
       if (docSnap.exists()) {
-        // upon successful login - go to home screen
-        navigation.navigate("Home", {userData: docSnap.data()}); 
+        // upon successful login -> go to home screen
+        navigation.navigate("Home", {userData: docSnap.data()}); // passing user data to home screen
       }
       else {
         console.log("No such user!");
@@ -42,7 +42,7 @@ const LoginScreen = () => {
     }
   };
 
-  // Handle register button press
+  // simply navigates to register screen
   const handleRegister = async () => {
     navigation.navigate("Register");
   };

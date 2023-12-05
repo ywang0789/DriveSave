@@ -16,11 +16,11 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
 
+    // registers user with firebase
   const handleRegister = async () => {
     try {
       await createUserWithEmailAndPassword(auth, username, password);
-      // You can navigate to a different screen after registration, if needed
-      navigation.navigate("Login");
+      navigation.navigate("Login"); // back to login screen
     } catch (error) {
       alert(error.message);
     }
