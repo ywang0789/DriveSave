@@ -11,10 +11,10 @@ import { db } from "../firebase";
 const TrackingScreen = ({ route }) => {
     const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
     const uid = userData.uid;
-    const [startTime, setStartTime] = useState(null); 
-    const [endTime, setEndTime] = useState(null); 
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
     const [timerValue, setTimerValue] = useState(0);
-    const timerRef = useRef(null); // Ref for timer 
+    const timerRef = useRef(null); // Ref for timer
 
     const [mapRegion, setMapRegion] = useState({
         latitude: 0,
@@ -67,44 +67,7 @@ const TrackingScreen = ({ route }) => {
         mapRef.current.animateToRegion(mapRegion, 500);
     };
 
-    // start tracking
-    const handleStart = () => {
-        // reset the timer 
-        setTimerValue(0);
-        const start = new Date();
-        setStartTime(start);
-        console.log("Start time: ", start);
-
-        // Start timer 
-        if (!timerRef.current) {
-            timerRef.current = setInterval(() => {
-                setTimerValue((prev) => prev + 1); // Increment timer every second
-            }, 1000);
-        }
-    };
-
-    // stop tracking
-    const handleStop = async() => {
-        const end = new Date();
-        setEndTime(end);
-        console.log("End time: ", end);
-
-        // Stop timer
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-
-        // make a new trip entry
-        const newTrip = {
-            start_time: startTime, 
-            end_time: end, // DONT USE endTime becuz async shanaygans
-            score: 50, // TODO: calculate score - prob no time to implement /o\
-        };
-
-        // Save the to db
-        await saveTrip(newTrip);
-    };
-
-    // save trip to db
+    // function to save trip to db
     const saveTrip = async (trip) => {
         // Save the new trip to the db in 'trips' field under the users
         const userRef = doc(db, "users", userData.uid);
@@ -123,6 +86,44 @@ const TrackingScreen = ({ route }) => {
         const formattedSeconds = String(seconds).padStart(2, "0");
 
         return `${formattedMinutes}:${formattedSeconds}`;
+    };
+
+    //////////////////////////BUTTONS//////////////////////////////////////
+    // start tracking
+    const handleStart = () => {
+        // reset the timer
+        setTimerValue(0);
+        const start = new Date();
+        setStartTime(start);
+        console.log("Start time: ", start);
+
+        // Start timer
+        if (!timerRef.current) {
+            timerRef.current = setInterval(() => {
+                setTimerValue((prev) => prev + 1); // Increment timer every second
+            }, 1000);
+        }
+    };
+
+    // stop tracking
+    const handleStop = async () => {
+        const end = new Date();
+        setEndTime(end);
+        console.log("End time: ", end);
+
+        // Stop timer
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+
+        // make a new trip entry
+        const newTrip = {
+            start_time: startTime,
+            end_time: end, // DONT USE endTime becuz async shanaygans
+            score: 50, // TODO: calculate score - prob no time to implement /o\
+        };
+
+        // Save the to db
+        await saveTrip(newTrip);
     };
 
     return (

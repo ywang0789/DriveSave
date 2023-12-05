@@ -67,6 +67,7 @@ const HomeScreen = ({ route }) => {
         }, [])
     );
 
+  /////////////////////////////////////////BUTTONS/////////////////////////////////////
     // on accunt btn press -> navigate to AccountScreen
     const handleAccountPress = () => {
         navigator.navigate("Account", { userData });
