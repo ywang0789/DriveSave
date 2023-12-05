@@ -8,12 +8,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const RegisterScreen = () => {
   const [name, setName] = useState("");
@@ -25,7 +20,7 @@ const RegisterScreen = () => {
     try {
       await createUserWithEmailAndPassword(auth, username, password);
       // You can navigate to a different screen after registration, if needed
-      navigation.navigate("Home");
+      navigation.navigate("Login");
     } catch (error) {
       alert(error.message);
     }

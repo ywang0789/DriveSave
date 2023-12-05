@@ -8,13 +8,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  onAuthStateChanged, 
-  signOut
-} from "firebase/auth";
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore"; 
 
 const LoginScreen = () => {
   const [username, setUsername] = useState("test@test.com");
@@ -25,9 +21,21 @@ const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       // Authenticate the user
-      await signInWithEmailAndPassword(auth, username, password);
-      // Navigate to another screen upon successful login
-      navigation.navigate("Home"); // replace 'Home' with your desired screen
+      const userCredential = await signInWithEmailAndPassword(auth, username, password);
+      const uid = userCredential.user.uid;
+
+      // fetch user data from firestore
+      const userRef = doc(db, "users", uid);
+      const docSnap = await getDoc(userRef);
+
+      if (docSnap.exists()) {
+        // upon successful login - go to home screen
+        navigation.navigate("Home", {userData: docSnap.data()}); 
+      }
+      else {
+        console.log("No such user!");
+      }
+
     } catch (error) {
       // Handle errors here
       alert(error.message);
@@ -59,7 +67,7 @@ const LoginScreen = () => {
         <Text style={styles.loginBtnText}>Log In</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
-        <Text style={styles.registerBtnText} >Register</Text>
+        <Text style={styles.registerBtnText}>Register</Text>
       </TouchableOpacity>
     </View>
   );

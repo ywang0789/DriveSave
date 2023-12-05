@@ -2,8 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 
-const HomeScreen = () => {
+
+const HomeScreen = ({ route}) => {
   const drivingScore = 69; // constant for now.... TODO: replace with actual scor
+  const userData = route.params.userData;
+  console.log(userData);
+  const userName = userData.name;
+  console.log(userName);
 
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
@@ -14,19 +19,20 @@ const HomeScreen = () => {
       const now = new Date();
       // time
       setCurrentTime(now.toLocaleTimeString());
-      
-      // date in mm/dd/yyyy format 
+
+      // date in mm/dd/yyyy format
       const dateOptions = { year: "numeric", month: "long", day: "numeric" };
       setCurrentDate(now.toLocaleDateString(undefined, dateOptions));
     };
-    updateTimer(); 
+
+    updateTimer();
     const timerId = setInterval(updateTimer, 1000); // update every second
-    return () => clearInterval(timerId); 
+    return () => clearInterval(timerId);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome User!</Text>
+      <Text style={styles.welcomeText}>Welcome {userName}!</Text>
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
         <Text style={styles.timeText}>{currentDate}</Text>
