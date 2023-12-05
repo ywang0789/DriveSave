@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "project",
-    "slug": "project",
-    "version": "1.0.0",
+    "name": "DriveSave",
+    "slug": "drivesave",
+    "version": "4.20.69",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,6 +25,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cad19ea1-90cc-4c9d-8651-297f284836f8"
+      }
+    },
+    "owner": "ywang0789",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cad19ea1-90cc-4c9d-8651-297f284836f8"
     }
   }
 }
