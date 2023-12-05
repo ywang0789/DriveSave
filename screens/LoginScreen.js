@@ -8,7 +8,10 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 
 const LoginScreen = () => {
@@ -16,14 +19,26 @@ const LoginScreen = () => {
   const [password, setPassword] = useState("123456");
   const navigation = useNavigation();
 
+  // Handle login button press
   const handleLogin = async () => {
     try {
       // Authenticate the user
       await signInWithEmailAndPassword(auth, username, password);
       // Navigate to another screen upon successful login
-      navigation.navigate('Home'); // replace 'Home' with your desired screen
+      navigation.navigate("Home"); // replace 'Home' with your desired screen
     } catch (error) {
       // Handle errors here
+      alert(error.message);
+    }
+  };
+
+  // Handle register button press
+  const handleRegister = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, username, password);
+      // You can navigate to a different screen after registration, if needed
+      navigation.navigate("Home");
+    } catch (error) {
       alert(error.message);
     }
   };
@@ -46,6 +61,9 @@ const LoginScreen = () => {
       />
       <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
         <Text style={styles.loginBtnText}>Log In</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
+        <Text style={styles.registerBtnText} >Register</Text>
       </TouchableOpacity>
     </View>
   );
