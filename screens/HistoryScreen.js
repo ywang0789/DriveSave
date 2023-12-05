@@ -13,7 +13,6 @@ const HistoryScreen = ({ route }) => {
         const seconds = duration % 60;
         return `${minutes}:${seconds.toString().padStart(2, "0")}`;
     };
-
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>History</Text>

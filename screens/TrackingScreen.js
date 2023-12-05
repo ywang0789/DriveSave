@@ -11,6 +11,8 @@ import { db } from "../firebase";
 const TrackingScreen = ({ route }) => {
     const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
     const uid = userData.uid;
+    const [startTime, setStartTime] = useState(null); 
+    const [endTime, setEndTime] = useState(null); 
     const [timerValue, setTimerValue] = useState(0);
     const timerRef = useRef(null); // Ref for timer 
 
@@ -67,7 +69,10 @@ const TrackingScreen = ({ route }) => {
 
     // start tracking
     const handleStart = () => {
+        // reset the timer 
+        setTimerValue(0);
         const start = new Date();
+        setStartTime(start);
         console.log("Start time: ", start);
 
         // Start timer 
@@ -79,8 +84,9 @@ const TrackingScreen = ({ route }) => {
     };
 
     // stop tracking
-    const handleStop = async () => {
+    const handleStop = async() => {
         const end = new Date();
+        setEndTime(end);
         console.log("End time: ", end);
 
         // Stop timer
@@ -89,16 +95,23 @@ const TrackingScreen = ({ route }) => {
 
         // make a new trip entry
         const newTrip = {
-            start_time: start, 
-            end_time: end, 
-            score: 50,
+            start_time: startTime, 
+            end_time: end, // DONT USE endTime becuz async shanaygans
+            score: 50, // TODO: calculate score - prob no time to implement /o\
         };
 
+        // Save the to db
+        await saveTrip(newTrip);
+    };
+
+    // save trip to db
+    const saveTrip = async (trip) => {
         // Save the new trip to the db in 'trips' field under the users
         const userRef = doc(db, "users", userData.uid);
         await updateDoc(userRef, {
-            trips: arrayUnion(newTrip),
+            trips: arrayUnion(trip),
         });
+        console.log("Trip saved!");
     };
 
     // Format time in seconds to MM:SS
