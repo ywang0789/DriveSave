@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, Image, Button } from "react-native";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"; 
+
 
 const HomeScreen = ({ route }) => {
   const drivingScore = 69; // constant for now.... TODO: replace with actual scor
@@ -48,22 +50,28 @@ const HomeScreen = ({ route }) => {
         )}
       </AnimatedCircularProgress>
       <View style={styles.dock}>
-        <Button
-          title="Button 1"
+        <Icon
+          name="account"
+          size={40}
+          color="#000"
           onPress={() => {
-            /* Handle press for Button 1 */
+            /* Handle press for Icon 1 */
           }}
         />
-        <Button
-          title="Button 2"
+        <Icon
+          name="play-circle-outline"
+          size={80}
+          color="#000"
           onPress={() => {
-            /* Handle press for Button 2 */
+            /* Handle press for Icon 2 */
           }}
         />
-        <Button
-          title="Button 3"
+        <Icon
+          name="history"
+          size={40}
+          color="#000"
           onPress={() => {
-            /* Handle press for Button 3 */
+            /* Handle press for Icon 3 */
           }}
         />
       </View>
@@ -122,13 +130,14 @@ const styles = StyleSheet.create({
   },
   dock: {
     position: "absolute",
+    alignItems: "center",
     bottom: 0,
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
     marginTop: 30,
     backgroundColor: "#fff",
-    padding: 20,
+    padding: 5,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.25,  
