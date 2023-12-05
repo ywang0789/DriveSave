@@ -91,8 +91,6 @@ const TrackingScreen = ({ route }) => {
     //////////////////////////BUTTONS//////////////////////////////////////
     // start tracking
     const handleStart = () => {
-        // reset the timer
-        setTimerValue(0);
         const start = new Date();
         setStartTime(start);
         console.log("Start time: ", start);
@@ -109,6 +107,8 @@ const TrackingScreen = ({ route }) => {
     const handleStop = async () => {
         const end = new Date();
         setEndTime(end);
+        // reset the timer
+        setTimerValue(0);
         console.log("End time: ", end);
 
         // Stop timer
@@ -152,7 +152,11 @@ const TrackingScreen = ({ route }) => {
                 <TouchableOpacity style={styles.startBtn} onPress={handleStart}>
                     <Text style={styles.startBtnText}>START</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.stopBtn} onPress={handleStop}>
+                <TouchableOpacity
+                    style={ timerValue === 0? styles.disabledStopBtn : styles.stopBtn}
+                    onPress={handleStop}
+                    disabled={timerValue === 0}
+                >
                     <Text style={styles.startBtnText}>STOP</Text>
                 </TouchableOpacity>
             </View>
@@ -253,6 +257,15 @@ const styles = StyleSheet.create({
         padding: 15,
         borderRadius: 8,
         alignItems: "center",
+    },
+    disabledStopBtn: {
+        marginTop: 12,
+        backgroundColor: "#7f0000",
+        width: "50%",
+        padding: 15,
+        borderRadius: 8,
+        alignItems: "center",
+        opacity: 0.5,
     },
     stopBtnText: {
         color: "#fff",
