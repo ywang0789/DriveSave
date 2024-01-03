@@ -1,5 +1,7 @@
 # DriveSave
 
+Personal project - mobile app to track and record trips.
+
 uses React-Native with Expo + firebase 
 
 ## Instructions:
