@@ -3,16 +3,19 @@ import MapView, { Marker } from "react-native-maps";
 import { StyleSheet, View, TouchableOpacity, Text, Modal, TextInput, Alert } from "react-native";
 import * as Location from "expo-location";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { AppStyles } from "../styles/AppStyles";
+import { useNavigation } from "@react-navigation/native";
 
 import { format, formatDuration, intervalToDuration } from "date-fns";
 import { doc, getDoc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase";
 
 const TrackingScreen = ({ route }) => {
+	const navigation = useNavigation();
 	const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
-    const uid = userData.uid;
+	const uid = userData.uid;
 
-    // timer stuff
+	// timer stuff
 	const [startTime, setStartTime] = useState(null);
 	const [endTime, setEndTime] = useState(null);
 	const [timerValue, setTimerValue] = useState(0);
@@ -22,7 +25,7 @@ const TrackingScreen = ({ route }) => {
 	const [modalVisible, setModalVisible] = useState(false); // NEEEED FOR POPUP TO DISAPPEAR
 	const [userScore, setUserScore] = useState("");
 
-    // map stuff
+	// map stuff
 	const [mapRegion, setMapRegion] = useState({
 		latitude: 0,
 		longitude: 0,
@@ -178,6 +181,12 @@ const TrackingScreen = ({ route }) => {
 				>
 					<Text style={styles.startBtnText}>STOP</Text>
 				</TouchableOpacity>
+				<TouchableOpacity
+							style={AppStyles.backBtn}
+							onPress={() => navigation.goBack()}
+						>
+							<Text style={AppStyles.backBtnText}>Back</Text>
+						</TouchableOpacity>
 			</View>
 			<Modal
 				animationType="slide"
@@ -345,26 +354,26 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		padding: 10,
 		width: 200,
-    },
-    modalText: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#000",
-        marginBottom: 20,
-    },
-    modalBtn: {
-        marginTop: 12,
-        backgroundColor: "#6c63ff",
-        width: "100%",
-        padding: 15,
-        borderRadius: 8,
-        alignItems: "center",
-    },
-    modalBtnText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
+	},
+	modalText: {
+		fontSize: 24,
+		fontWeight: "bold",
+		color: "#000",
+		marginBottom: 20,
+	},
+	modalBtn: {
+		marginTop: 12,
+		backgroundColor: "#6c63ff",
+		width: "100%",
+		padding: 15,
+		borderRadius: 8,
+		alignItems: "center",
+	},
+	modalBtnText: {
+		color: "#fff",
+		fontSize: 18,
+		fontWeight: "bold",
+	},
 });
 
 export default TrackingScreen;

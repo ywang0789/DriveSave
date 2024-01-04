@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { signOut } from "@firebase/auth";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
+import { AppStyles } from "../styles/AppStyles";
 
 const AccountScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -24,17 +25,24 @@ const AccountScreen = ({ route }) => {
     };
     return (
         <View style={styles.container}>
-            <Text style={styles.titleText}>Account Summary</Text>
-            <View style={styles.card}>
-                <Text style={styles.text}>Name: {userName}</Text>
-                <Text style={styles.text}>Email: {userEmail} </Text>
+            <Text style={AppStyles.titleText}>Account Summary</Text>
+            <View style={AppStyles.card}>
+                <Text style={AppStyles.text}>Name: {userName}</Text>
+                <Text style={AppStyles.text}>Email: {userEmail} </Text>
             </View>
-            <View style={styles.btnContainer}>
+            <View style={AppStyles.btnContainer}>
                 <TouchableOpacity
-                    style={styles.logoutBtn}
+                    style={AppStyles.logoutBtn}
                     onPress={handleLogout}
                 >
-                    <Text style={styles.logoutBtnText}>Logout</Text>
+                    <Text style={AppStyles.logoutBtnText}>Logout</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={AppStyles.backBtn}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Text style={AppStyles.backBtnText}>Back</Text>
                 </TouchableOpacity>
             </View>
         </View>

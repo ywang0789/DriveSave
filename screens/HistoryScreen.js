@@ -1,8 +1,11 @@
 import React from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { format, differenceInMinutes, differenceInSeconds } from "date-fns";
+import { AppStyles } from "../styles/AppStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const HistoryScreen = ({ route }) => {
+	const navigation = useNavigation();
 	const userData = route.params.userData; // ALL THE USER DATA, see firebase for structure
 	const userTrips = userData.trips || []; // make it an array. MUST BE HERE FOR .length() to work or else CRASH
 
@@ -42,6 +45,13 @@ const HistoryScreen = ({ route }) => {
 			) : (
 				<Text style={styles.noTripsText}>No trips recorded yet.</Text>
 			)}
+
+			<TouchableOpacity
+				style={AppStyles.backBtn}
+				onPress={() => navigation.goBack()}
+			>
+				<Text style={AppStyles.backBtnText}>Back</Text>
+			</TouchableOpacity>
 		</View>
 	);
 };
@@ -69,13 +79,17 @@ const styles = StyleSheet.create({
 		textAlign: "left",
 		padding: 20,
 		marginTop: 50,
-    },
-    noTripsText: {
-        fontSize: 18,
-        color: "#ffffff",
-        textAlign: "center",
-        marginTop: 50,
-    },
+	},
+	noTripsText: {
+		fontSize: 18,
+		color: "#ffffff",
+		textAlign: "center",
+		marginTop: 50,
+	},
+	scrollView: {
+		marginBottom: 50,
+		
+	},
 });
 
 export default HistoryScreen;
