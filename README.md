@@ -11,22 +11,22 @@ uses React-Native with Expo + firebase
    
 Android:
 
- ![image](https://github.com/ywang0789/DriveSave/assets/115739161/55bafdd9-71c9-448e-a502-c425316736c5)
+![image](https://github.com/ywang0789/DriveSave/assets/115739161/82f62cd1-2555-4fdc-8f16-e41582c1bebe)
 
 Apple:
 
- ![image](https://github.com/ywang0789/DriveSave/assets/115739161/2c6f3cff-0223-4ac3-b679-c004dbffbc3b)
+![image](https://github.com/ywang0789/DriveSave/assets/115739161/ac27ad0d-0dd8-4573-bf05-c135abb5dbe9)
 
 OR: enter URL:
 
 android: 
 ```
-exp://u.expo.dev/update/54bafcdf-2c25-459f-b788-5525a4c2463c
+exp://u.expo.dev/update/98aecbba-fa50-4cec-bd85-dbbba9cf250e
 ```
 
 apple: 
 ```
-exp://u.expo.dev/update/56fda477-94f9-4e34-afc0-a4dfe7b5e9a4
+exp://u.expo.dev/update/f909588e-a721-4c44-bd1d-2f0fb7281419
 ```
 
 
