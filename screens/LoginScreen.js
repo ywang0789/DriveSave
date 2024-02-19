@@ -1,78 +1,63 @@
-import React, { useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
-import { set } from "date-fns";
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import {styles} from '../styles/AppStyles.js';
 
+/**
+ * LoginScreen allows users to login with their email and password.
+ * It uses Firebase Authentication for secure login and navigation to either the Home screen upon successful login or the Register screen for new users.
+ */
 const LoginScreen = () => {
-	const [username, setUsername] = useState(""); // default username for testing
-	const [password, setPassword] = useState(""); // default password for testing
-	const navigation = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
-	// logs user in with firebase
-	const handleLogin = async () => {
-		try {
-			// Authenticate the user
-			const userCredential = await signInWithEmailAndPassword(auth, username, password);
-			const uid = userCredential.user.uid;
+  /**
+   * Handles the login process using Firebase Authentication.
+   * Navigates to the Home screen on success or displays an error message on failure.
+   */
+  const handleLogin = async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      navigation.navigate('Home', { userData: userCredential.user });
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
-			// fetch user data from firestore
-			const docRef = doc(db, "users", uid);
-			const docSnapshot = await getDoc(docRef);
+  /**
+   * Navigates to the Register screen for new users.
+   */
+  const handleRegister = () => {
+    navigation.navigate('Register');
+  };
 
-			if (docSnapshot.exists()) {
-				// upon successful login -> go to home screen
-				navigation.navigate("Home", { userData: docSnapshot.data() }); // passing user data to home screen
-			} else {
-				console.log("No such user!");
-			}
-		} catch (error) {
-			// Handle errors here
-			alert(error.message);
-		}
-	};
-
-	// clear username and password fields when screen is focused
-	useFocusEffect(
-		React.useCallback(() => {
-			setUsername("");
-			setPassword("");
-		}, [])
-	);
-
-	// simply navigates to register screen
-	const handleRegister = async () => {
-		navigation.navigate("Register");
-	};
-
-	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>DriveSave</Text>
-			<TextInput
-				placeholder="Email"
-				value={username}
-				onChangeText={(text) => setUsername(text)}
-				style={styles.input}
-			/>
-			<TextInput
-				placeholder="Password"
-				value={password}
-				onChangeText={(text) => setPassword(text)}
-				style={styles.input}
-				secureTextEntry
-			/>
-			<TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
-				<Text style={styles.loginBtnText}>Log In</Text>
-			</TouchableOpacity>
-			<TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
-				<Text style={styles.registerBtnText}>Register</Text>
-			</TouchableOpacity>
-		</View>
-	);
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>DriveSave</Text>
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        style={styles.input}
+        secureTextEntry
+      />
+      <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
+        <Text style={styles.loginBtnText}>Log In</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.registerBtn} onPress={handleRegister}>
+        <Text style={styles.registerBtnText}>Register</Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
