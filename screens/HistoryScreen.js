@@ -61,40 +61,5 @@ const HistoryScreen = ({ route }) => {
   );
 };
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#8fd9a8",
-	},
-	card: {
-		backgroundColor: "white",
-		borderRadius: 5,
-		padding: 20,
-		margin: 10,
-		shadowColor: "#000",
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.22,
-		shadowRadius: 2.22,
-		elevation: 3,
-	},
-	titleText: {
-		fontSize: 24,
-		fontWeight: "bold",
-		color: "#ffffff",
-		textAlign: "left",
-		padding: 20,
-		marginTop: 50,
-	},
-	noTripsText: {
-		fontSize: 18,
-		color: "#ffffff",
-		textAlign: "center",
-		marginTop: 50,
-	},
-	scrollView: {
-		marginBottom: 50,
-		
-	},
-});
 
 export default HistoryScreen;

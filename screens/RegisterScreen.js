@@ -65,54 +65,5 @@ const RegisterScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#8fd9a8",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: 20,
-    },
-    title: {
-        fontSize: 32,
-        fontWeight: "bold",
-        color: "#fff",
-        marginBottom: 40,
-    },
-    input: {
-        backgroundColor: "#fff",
-        width: "100%",
-        padding: 15,
-        borderRadius: 8,
-        fontSize: 16,
-        marginBottom: 20,
-    },
-    loginBtn: {
-        backgroundColor: "#6c63ff",
-        width: "100%",
-        padding: 15,
-        borderRadius: 8,
-        alignItems: "center",
-    },
-    loginBtnText: {
-        color: "#fff",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-    registerBtn: {
-        marginTop: 12,
-        backgroundColor: "#ffff",
-        width: "100%",
-        padding: 15,
-        borderRadius: 8,
-        alignItems: "center",
-    },
-
-    registerBtnText: {
-        color: "#6c63ff",
-        fontSize: 18,
-        fontWeight: "bold",
-    },
-});
 
 export default RegisterScreen;
